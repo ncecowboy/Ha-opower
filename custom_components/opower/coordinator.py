@@ -39,6 +39,7 @@ from homeassistant.util import dt as dt_util
 from homeassistant.util.unit_conversion import EnergyConverter, VolumeConverter
 
 from .const import CONF_LOGIN_DATA, CONF_TOTP_SECRET, CONF_UTILITY, DOMAIN
+from .opower_compat import ensure_portland_general_login_fix
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -75,6 +76,7 @@ class OpowerCoordinator(DataUpdateCoordinator[dict[str, OpowerData]]):
             # Refresh every 12h to be at most 12h behind.
             update_interval=timedelta(hours=12),
         )
+        ensure_portland_general_login_fix()
         self.api = Opower(
             async_create_clientsession(hass, cookie_jar=create_cookie_jar()),
             config_entry.data[CONF_UTILITY],

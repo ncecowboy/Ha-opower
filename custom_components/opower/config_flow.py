@@ -23,6 +23,7 @@ from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.typing import VolDictType
 
 from .const import CONF_LOGIN_DATA, CONF_TOTP_SECRET, CONF_UTILITY, DOMAIN
+from .opower_compat import ensure_portland_general_login_fix
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ async def _validate_login(
     data: Mapping[str, Any],
 ) -> None:
     """Validate login data and raise exceptions on failure."""
+    ensure_portland_general_login_fix()
     api = Opower(
         async_create_clientsession(hass, cookie_jar=create_cookie_jar()),
         data[CONF_UTILITY],
